@@ -23,12 +23,13 @@ function parseAbilityInfo(htmlContent: string): Ability {
     if (passiveCheck) {
         isPassive = true;
     }
+
     //Regex for getting ability name
-    const reAbility = /(?<="ability-list__item__name">).*?(?=\n* *<span)/gs;
+    const reAbility =  /(?<="ability-list__item__name">).*?(?=\n* *<span)/gs
     ability.name = htmlContent.match(reAbility)[0];
 
     //Regex for champion name
-    const reChampion = /(?<=champ=").*?(?=\n* *")/g;
+    const reChampion = /(?<=champ=").*?(?=\n* *")/g
     ability.champion = htmlContent.match(reChampion)[0];
 
     //Regex for default key of ability
@@ -40,19 +41,19 @@ function parseAbilityInfo(htmlContent: string): Ability {
     }
 
     const absoluteUrlPrefixAbility = 'https://www.mobafire.com/images/ability/';
-    if (isPassive) {
-        const reImage = /(?<=passive-symbol\.png".*?)(?<=<img src="\/images\/ability\/).*?(?=")/gs;
-        ability.image = absoluteUrlPrefixAbility + htmlContent.match(reImage)[0];
-    } else {
-        const reImage = /(?<=(<div class="ability-list__item__keybind">.<\/div>).*?)(?<=<img src="\/images\/ability\/).*?(?=" alt)/gs;
-        ability.image = absoluteUrlPrefixAbility + htmlContent.match(reImage)[0];
-    }
+
+    //Regex for getting ability image 
+    const reImage = /(?<=<img data-original="\/images\/ability\/).*?(?=" src)/gs
+     ability.image = absoluteUrlPrefixAbility + htmlContent.match(reImage)[0];
+ 
     
-    const reChampImage = /(?<=<img src="\/images\/champion\/square\/).*?(?=" class=")/gs
+    //Regex for getting champion name
+    const reChampImage =  /(?<=\/images\/champion\/square\/).*?.png/g;
     const absoluteUrlPrefixChampion = 'https://www.mobafire.com/images/champion/square/';
     ability.championImage = absoluteUrlPrefixChampion +  htmlContent.match(reChampImage)[0];
 
-    const reDesc = /(?<=<span class="desc">)(.*?)(?=<div)/gs;
+    //Regex for getting ability description
+    const reDesc = /(?<=<span class="desc">)(.*?)(?=<div)/gs
     ability.description = htmlContent.match(reDesc)[0];
 
     return ability;
@@ -66,8 +67,6 @@ function parseAbilityInfo(htmlContent: string): Ability {
 export function getAbilitiesFromHTML(source: string, amount = 0): Ability[] {
     const results: Ability[] = [];
     const abilityHTMLParser = (content: string): string[] => {
-        //Regex for getting ability name
-        //const re = /(?<="ability-list__item__name">).*?(?=\n*<span)/g
 
         //Regex for getting entire a block
         const re = /(?<=<a href="\/league-of-legends\/ability\/).*?(?=<\/a>)/gs;
@@ -85,7 +84,6 @@ export function getAbilitiesFromHTML(source: string, amount = 0): Ability[] {
             results.push(parseAbilityInfo(element));
         }
     });
-
     return results;
 }
 
@@ -96,11 +94,9 @@ export function getAbilitiesFromHTML(source: string, amount = 0): Ability[] {
  */
 export function getAbilitiesCountFromHTML(source: string): number {
     const abilityHTMLParser = (content: string): string[] => {
-        //Regex for getting ability name
-        //const re = /(?<="ability-list__item__name">).*?(?=\n*<span)/g
 
         //Regex for getting entire a block
-        const re = /(?<=<a href="\/league-of-legends\/ability\/).*?(?=<\/a>)/gs;
+        const re = /(?<=<a href="https:\/\/www.mobafire.com\/league-of-legends\/ability\/).*?(?=<\/a>)/gs;
         return (content || "").match(re) || [];
     };
     const htmlAbilities: string[] = abilityHTMLParser(source);
