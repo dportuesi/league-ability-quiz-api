@@ -48,9 +48,9 @@ function parseAbilityInfo(htmlContent: string): Ability {
  
     
     //Regex for getting champion name
-    const reChampImage =  /(?<=\/images\/champion\/square\/).*?.png/g;
-    const absoluteUrlPrefixChampion = 'https://www.mobafire.com/images/champion/square/';
-    ability.championImage = absoluteUrlPrefixChampion +  htmlContent.match(reChampImage)[0];
+    const reChampImage =  /(?<=\/images\/champion\/square\/)(.*?)(?=-30x)/g;
+    const absoluteUrlPrefixChampion = 'https://www.mobafire.com/images/champion/icon/';
+    ability.championImage = absoluteUrlPrefixChampion +  htmlContent.match(reChampImage)[0] + ".png";
 
     //Regex for getting ability description
     const reDesc = /(?<=<span class="desc">)(.*?)(?=<div)/gs
