@@ -69,7 +69,7 @@ export function getAbilitiesFromHTML(source: string, amount = 0): Ability[] {
     const abilityHTMLParser = (content: string): string[] => {
 
         //Regex for getting entire a block
-        const re = /(?<=<a href="https:\/\/www.mobafire.com\/league-of-legends\/ability\/).*?(?=<\/a>)/gs;
+        const re = /(?<=<a href="\/league-of-legends\/ability\/).*?(?=<\/a>)/gs;
         return (content || "").match(re) || [];
     };
     let htmlAbilities: string[] = abilityHTMLParser(source);
@@ -84,7 +84,6 @@ export function getAbilitiesFromHTML(source: string, amount = 0): Ability[] {
             results.push(parseAbilityInfo(element));
         }
     });
-
     return results;
 }
 
