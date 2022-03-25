@@ -4,7 +4,7 @@
   "description": "A TypeScript starter for Serverless Framework",
   "main": "handler.js",
   "scripts": {
-    "start-offline": "serverless offline start",
+    "start-offline": "serverless offline start --printOutput",
     "test": "serverless-bundle test"
   },
   "author": "",
